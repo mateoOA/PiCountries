@@ -1,12 +1,10 @@
-const { Router, json, query } = require("express");
+const { Router, json } = require("express");
 const {
   getAllCountries,
   getCountryById,
   getCountryByName,
 } = require("../controller/index");
-const { Country, Tourists } = require("../db");
 const router = Router();
-const { newActTour } = require("../controller/activities");
 router.use(json());
 
 router.get("/", async (req, res) => {
@@ -21,6 +19,7 @@ router.get("/", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    res.status(400).json(error.message);
   }
 });
 router.get("/:id", async (req, res) => {
@@ -30,15 +29,7 @@ router.get("/:id", async (req, res) => {
     res.json(getCountry);
   } catch (error) {
     console.log(error);
-  }
-});
-router.post("/", async (req, res, next) => {
-  let { name, dificulty, duration, season, country } = req.body;
-  try {
-    let activity = await newActTour(name, dificulty, duration, season, country);
-    res.json(activity);
-  } catch (error) {
-    console.log(error);
+    res.status(400).json(error.message);
   }
 });
 module.exports = router;

@@ -1,6 +1,6 @@
 const { Country, Activity } = require("../db");
 
-async function newActTour(name, dificulty, duration, season, country) {
+async function createAct(name, dificulty, duration, season, countries) {
   if (name) {
     let findInDb = await Activity.findOne({ where: { name: name } });
     if (findInDb === null) {
@@ -10,10 +10,15 @@ async function newActTour(name, dificulty, duration, season, country) {
         duration,
         season,
       });
-      let countryInDb = await Country.findOne({ where: { name: country } });
-      activity.addCountry(countryInDb);
+      countries.forEach(async (id) => {
+        const country = await Country.findOne({
+          where: { id },
+        });
+        console.log(country);
+        await country?.addActivity(activity);
+      });
       return "Activity created successfully";
     } else throw new Error("The activity already exist");
   } else throw new Error("Please insert a name");
 }
-module.exports = { newActTour };
+module.exports = { createAct };
