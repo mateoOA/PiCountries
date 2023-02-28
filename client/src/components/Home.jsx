@@ -1,10 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector} from "react-redux"
-import {getCountries} from "../actions"
+import {getCountries, filterByContinent} from "../actions"
 import { Link } from "react-router-dom";
 import Card from "./Card";
 import styled from "styled-components"
+import SearchBar from "./SearchBar";
 
 const Section = styled.section`
     display: grid;
@@ -13,8 +14,10 @@ const Section = styled.section`
     margin: 0 auto;
     width: 90vw;
 `
-const Dropdown =styled.div`
+const Dropdown = styled.div`
+    padding: 30px;
 
+    
 `
 
 export default function Home () {
@@ -30,11 +33,13 @@ export default function Home () {
         dispatch(getCountries())
 
     }
-
+function handlefiltercountry(e){
+    dispatch(filterByContinent(e.target.value))
+}
     return(
         <div>
             <Link to= "/activity"> crear actividad turistica</Link>
-            <h1>Pi countries</h1>
+            <SearchBar/>
             <button onClick={e=> {handleClick(e)}}>
                 refresh
             </button>
@@ -42,20 +47,27 @@ export default function Home () {
                 <select>
                     <option value="A-Z">A-Z</option>
                     <option value="Z-A">Z-A</option>
-                </select>
-                <select>
                     <option value="Ascendant">Population ascendant</option>
                     <option value="Descendant">Population descendant</option>
                 </select>
-                <select>
+                <select onChange={e=>handlefiltercountry(e)}>
+                    <option value="All">All countries</option>
                     <option value="Americas">American countries</option>
                     <option value="Africa">African countries</option>
                     <option value="Europe">European countries</option>
                     <option value="Oceania">Oceanic countries</option>
                     <option value="Asia">Asian countries</option>
-                    <option value="Antartic">Antartica countries</option>
+                    <option value="Antarctic">Antartica countries</option>
                 </select>
-                <Section>
+                <select>
+                <option value="All">All Season Activities</option>
+                <option value="summer">Summer Activities</option>
+                <option value="autumn">Autumn Activities</option>
+                <option value="winter">Winter Activities</option>
+                <option value="spring">Spring Activities</option>
+                </select>
+            </Dropdown>
+            <Section>
                 {
                    allCountries?.map(el=> ( /* el ? controla que si es undefined no se rompa */
                     
@@ -63,7 +75,6 @@ export default function Home () {
                    ))
                 }
                 </Section>
-            </Dropdown>
 
         </div>
     )
