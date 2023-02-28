@@ -1,5 +1,14 @@
+@font-face {
+  font-family: GOW;
+  src: url("../public/Preview/util/GODOFWAR.TTF");
+}
+@font-face {
+  font-family: typeWritter;
+  src: url("../public/Preview/util/atwriter.ttf");
+}
 body {
-  background: url('client\public\Preview\util\fondo.jpg');
+  
+  background: url("../public/Preview/util/fondo.jpg");
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

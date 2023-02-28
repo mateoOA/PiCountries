@@ -11,6 +11,7 @@ async function getAllCountries() {
   }
 
   const countryCall = await axios.get("https://restcountries.com/v3/all");
+  console.log(countryCall);
   const countryValues = countryCall.data.map((m) => {
     return {
       id: m.cca3,

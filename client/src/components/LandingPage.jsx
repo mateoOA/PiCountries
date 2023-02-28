@@ -1,13 +1,23 @@
 import React from "react"
 import {Link} from "react-router-dom"
+import styled from "styled-components"
+
+const Img = styled.img`
+    width: 20%
+`
+const H1 = styled.h1`
+    font-size: 100px;
+    color: white;
+    font-family: GOW, sans-serif;
+`
 
 
 export default function LandingPage(){
     return(
         <div>
-            <h1>Pi Countries</h1>
+            <H1>Pi Countries</H1>
             <Link to = "/home">
-                <img src= "client\public\Preview\boton pagina 1.png" alt=""/>
+                <Img src= "Preview/util/botonPagina1.png" alt="" />
             </Link>
         </div>
     )
