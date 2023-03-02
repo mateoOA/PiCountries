@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components"
 
 const Div = styled.div`
@@ -42,20 +43,22 @@ const Img =styled.img`
     object-fit: contain;
 `
 
-export default function Card({name, continent, flag}){
+export default function Card({name, continent, flag, id}){
     return (
-        <Div>
-            <Img src={flag} alt="img"/>
-            <CardData>
-                <TextDiv>
-                    <Title>Country:</Title>
-                    <Content>{name}</Content>
-                </TextDiv>
-                <TextDiv>
-                    <Title>Continent:</Title>
-                    <Content>{continent}</Content>  
-                </TextDiv>
-            </CardData>
-        </Div>
+        <Link to={`/countries/${id}`} >
+            <Div>
+                <Img src={flag} alt="img"/>
+                <CardData>
+                    <TextDiv>
+                        <Title>Country:</Title>
+                        <Content>{name}</Content>
+                    </TextDiv>
+                    <TextDiv>
+                        <Title>Continent:</Title>
+                        <Content>{continent}</Content>  
+                    </TextDiv>
+                </CardData>
+            </Div>
+        </Link>
     )
 }

@@ -1,26 +1,32 @@
-const { Router, json, query } = require("express");
+const { Router, json } = require("express");
 const { Activity } = require("../db");
-const router = Router();
 const { createAct } = require("../controller/activities");
+const router = Router();
+
 router.use(json());
 
-router.get("/", async (req, res) => {
+router.get("/", async (_req, res) => {
   const activities = await Activity.findAll();
+
   if (activities) {
-    return res.status(200).json(activities);
+    res.status(200).json(activities);
   } else {
-    return res
+    res
       .status(404)
       .json(activities.length ? activities : "No se encontraron activdades");
   }
 });
-router.post("/", async (req, res, next) => {
-  let { name, dificulty, duration, season, country } = req.body;
+
+router.post("/", async (req, res) => {
+  const { name, difficulty, duration, season, country } = req.body;
+
   try {
-    let activity = await createAct(name, dificulty, duration, season, country);
-    res.json(activity);
+    const activity = await createAct(name, difficulty, duration, season, country);
+
+    res.status(200).json(activity);
   } catch (error) {
-    console.log(error);
+    res.status(400).json(error);
   }
 });
+
 module.exports = router;

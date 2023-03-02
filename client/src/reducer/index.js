@@ -1,4 +1,5 @@
 const initialState = {
+	detail: [],
 	countries: [],
 	countriesCopy: [],
 	activities: [],
@@ -15,9 +16,9 @@ function rootReducer(state = initialState, action) {
 		case "GET_COUNTRY_NAME":
 			return {
 				...state,
-				countries: action.paylod,
+				countries: action.payload,
 			};
-		case "GET_ACTIVITY":
+		case "GET_ACTIVITIES":
 			return {
 				...state,
 				activities: action.payload,
@@ -41,6 +42,11 @@ function rootReducer(state = initialState, action) {
 					),
 				};
 			}
+		case "GET_DETAILS":
+			return {
+				...state,
+				detail: action.payload,
+			};
 		case "ORDER_BY":
 			let sortedBy =
 				action.payload === "A-Z"

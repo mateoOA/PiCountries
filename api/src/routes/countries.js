@@ -1,35 +1,44 @@
 const { Router, json } = require("express");
-const {
-  getAllCountries,
-  getCountryById,
-  getCountryByName,
-} = require("../controller/index");
+const { getCountries, getCountryById } = require("../controller/countries");
 const router = Router();
+
 router.use(json());
 
 router.get("/", async (req, res) => {
   try {
-    let { name } = req.query;
-    if (!name) {
-      let countries = await getAllCountries();
-      res.json(countries);
-    } else {
-      let getName = await getCountryByName(name);
-      res.json(getName);
+    const params = {
+      name: req.query.name?.toLowerCase(),
+      continent: req.query.continent?.toLowerCase(),
+      activity: req.query.activity,
+      sortBy: req.query.sortBy,
+      sortDir: req.query.sortDir,
+      page: req.query.page,
+      limit: req.query.limit,
+    };
+
+    for (const key in params) {
+      if (params[key] === undefined || params[key] === null) {
+        delete params[key];
+      }
     }
+
+    let countries = await getCountries(params);
+
+    res.status(200).json(countries);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error.message);
   }
 });
+
 router.get("/:id", async (req, res) => {
   try {
     let { id } = req.params;
     let getCountry = await getCountryById(id);
-    res.json(getCountry);
+
+    res.status(200).json(getCountry);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error.message);
   }
 });
+
 module.exports = router;

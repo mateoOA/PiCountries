@@ -6,25 +6,54 @@ import styled from "styled-components"
 
 const Temp = styled.div`
     color: white;
+    padding-top: 200px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
 `
-
+function validate(input){
+    let errors = {valid: true}
+    if (!input.name){
+        errors.name = "You must add a name"
+        errors.valid = false
+    } 
+    if (input.duration < 1 || input.duration > 24){
+        errors.duration = "You must add a duration between 1 and 24"
+        errors.valid = false
+    }
+    if (input.difficulty < 1 || input.difficulty > 5){
+        errors.difficulty = "You must add a difficulty between 1 and 5"
+        errors.valid = false
+    }
+    if (!input.season){
+        errors.season = "You must select a season"
+        errors.valid = false
+    } 
+    if (!input.country.length){
+        errors.country = "You must add at least one country"
+        errors.valid = false
+    } 
+    return errors
+}
 export default function ActivityCreate(){
     const dispatch =useDispatch()
     const countries = useSelector((state)=> state.countries)
     const history = useHistory()
+    const [errors, setErrors] = useState({})
     const [input, setInput] =useState({
         name: "",
         duration: "",
-        dificulty: "",
+        difficulty: "",
         season: "",
         country: []
     })
-
+  
     function handleChange(e) {
         setInput({
             ...input,
             [e.target.name] : e.target.value
         })
+        
     }
     function handleCheck(e){
         if (e.target.checked){
@@ -35,25 +64,35 @@ export default function ActivityCreate(){
         }
     }
     function handleSelect(e){
+        const selectedCountry = e.target.value;
+        if(selectedCountry){
+        const hasCountry = input.country.find((x) => x === selectedCountry);
+        const newCountries = hasCountry
+            ? input.country.filter((x) => x !== selectedCountry)
+            : [ ...input.country, selectedCountry ];
+
         setInput({
             ...input,
-            country: [ ...input.country, e.target.value]
-        })
-        console.log(input.country)
+            country: newCountries
+        })}
     }
     function handleSubmit(e) {
         e.preventDefault()
-        console.log(input)
-        dispatch(postActivity(input))
-        alert("Activity created successfully")
-        setInput({
-            name: "",
-            duration: "",
-            dificulty: "",
-            season: "",
-            country: []
-        })
-        history.push("/home")
+        const result = validate({...input})
+        setErrors(result)
+        if( result.valid){
+
+            dispatch(postActivity(input))
+            alert("Activity created successfully")
+            setInput({
+                name: "",
+                duration: "",
+                difficulty: "",
+                season: "",
+                country: []
+            })
+            history.push("/home")
+        }
     }
 
     useEffect(() => {
@@ -72,6 +111,9 @@ export default function ActivityCreate(){
                         value = {input.name}
                         name = "name"
                         onChange={handleChange}/>
+                        {errors.name && (
+                            <p className="error">{errors.name}</p>
+                        )}
                 </div>
                 <div>
                     <label>Duration:</label>
@@ -80,19 +122,29 @@ export default function ActivityCreate(){
                         value = {input.duration}
                         name = "duration"
                         onChange={handleChange}/>
+                        {errors.duration && (
+                            <p className="error">{errors.duration}</p>
+                        )}
                 </div>
                 <div>
-                    <label>Dificulty:</label>
+                    <label>Difficulty:</label>
                     <input
                         type = "number"
-                        value = {input.dificulty}
-                        name = "dificulty"
+                        value = {input.difficulty}
+                        name = "difficulty"
                         onChange={handleChange}/>
+                        {errors.difficulty && (
+                            <p className="error">{errors.difficulty}</p>
+                        )}
                 </div>
                 <select onChange={(e) => handleSelect(e)}>
-                    {countries.map((c) => (
+                    <option value = ""></option>
+                    {countries.map((c) => (   
                         <option value = {c.name}> {c.name} </option>
                     ))}
+                    {errors.countries && (
+                            <p className="error">{errors.countries}</p>
+                        )}
                 </select>
                 <ul>
                     <li>{input.country.map(e => e + " ,")}</li>
@@ -128,6 +180,9 @@ export default function ActivityCreate(){
                     onChange={(e) => handleCheck(e)}
                     value = {input.season}/>
                         <label htmlFor = "spring">Spring</label>
+                        {errors.season && (
+                            <p className="error">{errors.season}</p>
+                        )}
                         <br/>
                 <button type="submit">Submit</button>
             </form>

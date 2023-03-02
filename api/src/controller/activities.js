@@ -1,12 +1,12 @@
 const { Country, Activity } = require("../db");
 
-async function createAct(name, dificulty, duration, season, countries) {
+async function createAct(name, difficulty, duration, season, countries) {
 	if (name) {
 		let findInDb = await Activity.findOne({ where: { name: name } });
 		if (findInDb === null) {
 			let activity = await Activity.create({
 				name,
-				dificulty,
+				difficulty,
 				duration,
 				season,
 			});
