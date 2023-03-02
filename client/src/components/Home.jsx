@@ -43,9 +43,6 @@ export default function Home () {
 
     useEffect(() =>  {
         dispatch(getActivities())
-    },[dispatch])
-
-    useEffect(() =>  {
         dispatch(getCountries())
     },[dispatch])
 
@@ -68,7 +65,12 @@ export default function Home () {
         setCurrentPage(1)
         setOrden(`Ordenado ${e.target.value}`)
     }
-    
+    function handlefiltercountry(e){
+        dispatch(filterByContinent(e.target.value))
+}
+    function handlefilterActivity(e){
+    dispatch(filterByActivity(e.target.value))
+}
     return(
         <div>
                 <button onClick={e=> {handleClick(e)}}>
@@ -83,8 +85,8 @@ export default function Home () {
                         <option value="Ascendant">Population ascendant</option>
                         <option value="Descendant">Population descendant</option>
                     </select>
-                    <select onChange={e=>handleSelectContinent(e)}>
-                        <option value="">All countries</option>
+                    <select onChange={e=>handlefiltercountry(e)}>
+                        <option value="All">All countries</option>
                         <option value="Americas">American countries</option>
                         <option value="Africa">African countries</option>
                         <option value="Europe">European countries</option>
@@ -92,7 +94,7 @@ export default function Home () {
                         <option value="Asia">Asian countries</option>
                         <option value="Antarctic">Antartica countries</option>
                     </select>
-                    <select onChange={(e) => handleSelectActivity(e)}>
+                    <select onChange={(e) => handlefilterActivity(e)}>
                         <option value = "">All activities</option>
                         {activities.map((c) => (   
                         <option value = {c.name}> {c.name} </option>
