@@ -7,13 +7,13 @@ import Card from "./Card";
 import styled from "styled-components"
 import SearchBar from "./SearchBar";
 import Paginado from "./Paginado";
-
-const StyledLink = styled.Link`
+/* 
+const StyledLink = styled.link`
     background-color: white;
     color: black;
     padding: 0px 10px;
     text-decoration: none;
-`
+` */
 const Section = styled.section`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -68,10 +68,7 @@ export default function Home () {
                 <button onClick={e=> {handleClick(e)}}>
                     refresh
                 </button>
-                <button onclick="window.location.href='https://w3docs.com';">
-                Create activity
-                </button>
-            <StyledLink to="/activity"> <button>Create activity </button></StyledLink>
+            <Link to="/activity"> <button>Create activity </button></Link>
             <SearchBar/>
                 <Dropdown>
                     <select onChange={e=>handleSort(e)}>

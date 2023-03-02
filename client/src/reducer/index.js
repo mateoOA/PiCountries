@@ -22,6 +22,10 @@ function rootReducer(state = initialState, action) {
 				...state,
 				activities: action.payload,
 			};
+		case "POST_ACTIVITY":
+			return {
+				...state,
+			};
 		case "FILTER_BY_CONTINENT":
 			const allCountriesCopy = state.countriesCopy;
 			if (action.payload === "All") {

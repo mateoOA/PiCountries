@@ -13,16 +13,15 @@ const DivStyle = styled.div`
 
 export default function SearchBar(){
     const dispatch = useDispatch()
-    const [name, setName] = useState("")
+    const [country, setName] = useState("")
 
     function handleInputChange(e){
         e.preventDefault()
         setName(e.target.value)
-
     }
     function handleSubmit(e){
         e.preventDefault()
-        dispatch(getCountryName(name))
+        dispatch(getCountryName(country))
     }
 
     return(
